@@ -2,7 +2,7 @@
 1. Clonar o Repositório (Baixar o Projeto)
 Se alguém já criou o projeto no GitHub, você precisa baixar (clonar) para seu computador:
 
-bash
+no bash
 git clone https://github.com/nome-do-grupo/nome-do-projeto.git
 cd nome-do-projeto  # Entra na pasta do projeto
 2. Criar uma Branch (Área de Trabalho Separada)
@@ -21,7 +21,7 @@ Salvar normalmente (Ctrl+S)
 Quando terminar uma parte do trabalho, "salve" suas mudanças no Git:
 
 bash
-git add .  # Marca TODAS as alterações para commit
+git add .  #Marca TODAS as alterações para commit
 git commit -m "Adicionei o botão de login"  # Salva com uma mensagem
 5. Enviar para o GitHub (Push)
 Agora, envie suas alterações para o repositório do grupo:

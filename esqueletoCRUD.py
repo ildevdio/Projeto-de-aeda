@@ -12,7 +12,7 @@ def carregarInfo():
     if not os.path.exists(arquivo):
         with open(arquivo, 'w') as f:
             json.dump([], f, indent=4)
-            #lalalalala
+            
     #carrega o conteúdo
     with open(arquivo, 'r') as f:   
         return json.load(f)

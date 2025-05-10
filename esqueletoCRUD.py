@@ -7,6 +7,9 @@ os.system('cls')
 #Definindo o caminho do arquivo
 arquivo = os.path.join(os.path.dirname(__file__), 'info.json')
 
+def bananinha():
+    print("le poggers")
+
 def carregarInfo():
     #Verifica se o arquivo existe, se não existir, cria o arquivo com uma lista vazia
     if not os.path.exists(arquivo):

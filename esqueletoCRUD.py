@@ -144,8 +144,3 @@ def main():
 #Roda o Software
 if __name__ == "__main__":
     main()
-
-
-
-
-    # CRUD 3

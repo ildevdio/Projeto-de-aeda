@@ -91,6 +91,18 @@ def menuCardapio():
     print("  5 - Sair para o menu ")
     print("=======================")
 
+def menuPedidos():
+    print("                       ")
+    print("=======================")
+    print("                       ")
+    print("  1 - Adicionar Pedido    ")
+    print("  2 - Cancelar Pedido   ")
+    print("  3 - Editar Pedido           ")
+    print("  4 - Listar Pedidos          ")
+    print("  5 - Verificar Status do Pedido ")    
+    print("  6 - Sair para o menu ")
+    print("=======================")
+
 def menuGeral():
     print("                       ")
     print("=======================")
@@ -99,7 +111,7 @@ def menuGeral():
     print("                       ")
     print("  1 - Cardápio         ")
     print("  2 - dev              ")
-    print("  3 - dev              ")
+    print("  3 - Pedidos              ")
     print("  4 - Sair             ")
     print("                       ")
     print("=======================")
@@ -156,9 +168,45 @@ def main():
                     lorem = 1
                     break
                 
-            case 3: #Crud 3
-                    lorem = 2
-                    break
+            case 3:  # CRUD 3
+                os.system('cls')
+                print("\n==================================================")
+                print("PEIDIOS")
+                print("==================================================\n")
+                menuPedidos()
+                opPedidos = int(input("Informe a opção que deseja: "))  # Corrigido o parêntese
+
+                if opPedidos == 1:
+                    os.system('cls')
+                    # Mostrar todos os comidas do cardápio
+                    comidasPedido = int(input("Insira o id da comida solicitada: "))  # Corrigido o parêntese
+                    mesaPedido = input("Informe a mesa do Pedido: ")
+                    obsPedido = input("Informe as observações do pedido: ")
+
+                elif opPedidos == 2:
+                    # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer cancelar/remover
+                    pass
+
+                elif opPedidos == 3:
+                    # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer editar ou editar status dele
+                    pass
+
+                elif opPedidos == 4:
+                    # Perguntar se quer listar todos os pedidos, ou só os prontos, ou só os em preparo ou só os entregues
+                    pass
+
+                elif opPedidos == 5:
+                    # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer conferir o status
+                    pass
+
+                elif opPedidos == 6:
+                    # Opção 6 (adicionar lógica aqui)
+                    print("Saindo para o menu principal...")
+                    sleep(3)
+                    break         
+                       
+                       
+
                 
             case 4:
                     print("Saindo...")

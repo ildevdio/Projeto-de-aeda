@@ -171,7 +171,7 @@ def main():
             case 3:  # CRUD 3
                 os.system('cls')
                 print("\n==================================================")
-                print("PEIDIOS")
+                print("PEDIDOS")
                 print("==================================================\n")
                 menuPedidos()
                 opPedidos = int(input("Informe a opção que deseja: "))  # Corrigido o parêntese

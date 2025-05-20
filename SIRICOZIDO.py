@@ -11,7 +11,7 @@ def carregarInfo():
         dados_iniciais = {
             "cardapio" : [],
             "mesas" : [],
-            "garcons" : []
+            "pedidos" : []
         }
         with open(arquivo, 'w') as f:
             json.dump(dados_iniciais, f, indent=4)
@@ -127,9 +127,7 @@ def main():
         opModulo=int(input("Escolha o Módulo Desejado: "))
 
         match opModulo:
-            
             case 1: #Cardápio
-                while True:
                     print("Cardápio")
                     while True:
                         
@@ -143,24 +141,27 @@ def main():
                             
 
                         
-                        if opcardapio == 2: #adcionar prato
+                        elif opcardapio == 2: #adcionar prato
                             os.system('cls')
                             adcionarPratos('idPrato', 'nomePrato', 'descricaoPrato', 'precoPrato')   
                             break
                         
-                        if opcardapio == 3: #Editar
+                        elif opcardapio == 3: #Editar
                             
                             print("em dev")
                             break
                         
-                        if opcardapio == 4: #Excluir
+                        elif opcardapio == 4: #Excluir
                             
                             print("em dev")
                             break
-                        if opcardapio == 5: #Sair
+                        elif opcardapio == 5: #Sair
 
                             print("Saindo para o menu principal...")
                             sleep(3)
+                            break
+                        else:
+                            print("Opção inválida.")
                             break
 
 
@@ -169,41 +170,42 @@ def main():
                     break
                 
             case 3:  # CRUD 3
-                os.system('cls')
-                print("\n==================================================")
-                print("PEDIDOS")
-                print("==================================================\n")
-                menuPedidos()
-                opPedidos = int(input("Informe a opção que deseja: "))  # Corrigido o parêntese
-
-                if opPedidos == 1:
+                while True:
                     os.system('cls')
-                    # Mostrar todos os comidas do cardápio
-                    comidasPedido = int(input("Insira o id da comida solicitada: "))  # Corrigido o parêntese
-                    mesaPedido = input("Informe a mesa do Pedido: ")
-                    obsPedido = input("Informe as observações do pedido: ")
+                    print("\n==================================================")
+                    print("PEDIDOS")
+                    print("==================================================\n")
+                    menuPedidos()
+                    opPedidos = int(input("Informe a opção que deseja: "))  # Corrigido o parêntese
 
-                elif opPedidos == 2:
-                    # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer cancelar/remover
-                    pass
+                    if opPedidos == 1:
+                        os.system('cls')
+                        # Mostrar todos os comidas do cardápio
+                        comidasPedido = int(input("Insira o id da comida solicitada: "))  # Corrigido o parêntese
+                        mesaPedido = input("Informe a mesa do Pedido: ")
+                        obsPedido = input("Informe as observações do pedido: ")
 
-                elif opPedidos == 3:
-                    # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer editar ou editar status dele
-                    pass
+                    elif opPedidos == 2:
+                        # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer cancelar/remover
+                        pass
 
-                elif opPedidos == 4:
-                    # Perguntar se quer listar todos os pedidos, ou só os prontos, ou só os em preparo ou só os entregues
-                    pass
+                    elif opPedidos == 3:
+                        # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer editar ou editar status dele
+                        pass
 
-                elif opPedidos == 5:
-                    # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer conferir o status
-                    pass
+                    elif opPedidos == 4:
+                        # Perguntar se quer listar todos os pedidos, ou só os prontos, ou só os em preparo ou só os entregues
+                        pass
 
-                elif opPedidos == 6:
-                    # Opção 6 (adicionar lógica aqui)
-                    print("Saindo para o menu principal...")
-                    sleep(3)
-                    break         
+                    elif opPedidos == 5:
+                        # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer conferir o status
+                        pass
+
+                    elif opPedidos == 6:
+                        # Opção 6 (adicionar lógica aqui)
+                        print("Saindo para o menu principal...")
+                        sleep(3)
+                        break         
                        
                        
 

@@ -1,44 +1,12 @@
 {
-  "cardapio": [
-    {
-      "id": 1,
-      "nome": "Macarrao",
-      "descricao": "macarrao classico",
-      "preco": 25.99
-    },
-    {
-      "id": 2,
-      "nome": "Coca Cola",
-      "descricao": "bebida boa",
-      "preco": 5.0
-    },
-    {
-      "id": 3,
-      "nome": "Arroz Soltinho",
-      "descricao": "muito soltinho",
-      "preco": 22.0
-    }
-  ],
-  "mesas": [],
-  "pedidos": [
-    {
-      "mesa": "3",
-      "itens": [
+    "cardapio": [
         {
-          "id_prato": 1,
-          "nome_prato": "Macarrao",
-          "quantidade": 1,
-          "observacoes": "sem tomate",
-          "status": "Em preparo"
-        },
-        {
-          "id_prato": 2,
-          "nome_prato": "Coca Cola",
-          "quantidade": 2,
-          "observacoes": "com gelo",
-          "status": "Em preparo"
+            "id": 1,
+            "nome": "Alface Com Feij�o",
+            "descricao": "gostozin",
+            "preco": 100.0
         }
-      ]
-    }
-  ]
+    ],
+    "mesas": [],
+    "pedidos": []
 }

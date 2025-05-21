@@ -1,0 +1,12 @@
+{
+    "cardapio": [
+        {
+            "id": 1,
+            "nome": "Alface Com Feijão",
+            "descricao": "gostozin",
+            "preco": 100.0
+        }
+    ],
+    "mesas": [],
+    "pedidos": []
+}

@@ -1,9 +1,13 @@
+from flask import Flask, render_template, request, flash
 import json
 import os
 from time import sleep
 os.system('cls')
 
+app = Flask(__name__)
 arquivo = os.path.join(os.path.dirname(__file__), 'storage.json')
+app.secret_key = "your_secret_key"
+mesa_qtde = 25
 
 def carregarInfo():
     #Verifica se o arquivo existe, se não existir, cria o arquivo com uma lista vazia
@@ -166,7 +170,67 @@ def main():
 
 
             case 2: #Crud 2
-                    lorem = 1
+            
+                    mesa_qtde = 25
+
+                    @app.route("/", methods=["GET", "POST"])
+                    def homepage():
+                        return render_template("index.html")
+
+                    @app.route("/reserva", methods=["GET", "POST"])
+                    def reserva():
+                        dados = carregarInfo()  # Renomeie para 'dados' ou algo mais claro
+                        mesas_ocupadas = len(dados["mesas"])  # Acessa as mesas reservadas
+                        mesas_disponiveis = mesa_qtde - mesas_ocupadas
+
+                        if request.method == "POST":
+                            if mesas_disponiveis <= 0:
+                                flash("Desculpe, não há mesas disponíveis no momento!", "error")
+                                return render_template("index.html", mesas_disponiveis=mesas_disponiveis)
+                            
+                            name = request.form["name"]
+                            email = request.form["email"]
+                            numero_mesa = request.form["mesa"]  # Renomeie para 'numero_mesa'
+                            mesa_quant = request.form["mesa_quant"]
+
+                            remessa = {
+                                "nome": name,
+                                "email": email,
+                                "mesa": numero_mesa,  # Usa o novo nome
+                                "quantidade de mesas": mesa_quant
+                            }
+                            dados["mesas"].append(remessa)  # Agora funciona, pois 'dados' é o dicionário
+                        
+                            with open(arquivo, 'w', encoding='utf-8') as arq:
+                                json.dump(dados, arq, indent=4, ensure_ascii=False)  # Corrigido: 'dados' em vez de 'mesas'
+
+                        return render_template("reserva.html", mesas_disponiveis = mesas_disponiveis)
+
+                    @app.route("/remover", methods=["GET", "POST"])
+                    def remover():
+                        mesa = carregarInfo()
+                        if request.method == "POST":        
+                            name = request.form["name1"]
+                            email = request.form["email1"]
+                            mesa1 = request.form["mesa1"]
+                            mesa_quant = request.form["mesa_quant1"]
+
+                            
+                            remessa = {"nome": name, "email": email, "mesa": mesa1, "quantidade de mesas": mesa_quant}
+
+                            for reserva in mesa["mesas"]:
+                                if reserva == remessa:
+                                    mesa["mesas"].remove(reserva)
+                                break
+
+                        
+                            with open(arquivo, 'w', encoding='utf-8') as arq:
+                                json.dump(mesa, arq, indent=4, ensure_ascii=False)
+
+                        return render_template("remover.html")
+
+                
+                    app.run(debug=True)
                     break
                 
             case 3:  # CRUD 3

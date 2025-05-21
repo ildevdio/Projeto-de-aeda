@@ -176,14 +176,48 @@ def main():
                     print("PEDIDOS")
                     print("==================================================\n")
                     menuPedidos()
-                    opPedidos = int(input("Informe a opção que deseja: "))  # Corrigido o parêntese
+                    opPedidos = int(input("Informe a opção que deseja: "))
 
                     if opPedidos == 1:
                         os.system('cls')
-                        # Mostrar todos os comidas do cardápio
-                        comidasPedido = int(input("Insira o id da comida solicitada: "))  # Corrigido o parêntese
-                        mesaPedido = input("Informe a mesa do Pedido: ")
-                        obsPedido = input("Informe as observações do pedido: ")
+                        informacoes = carregarInfo()
+                        mesaPedido = input("Informe o número da mesa: ")
+                        itens_pedido = []  # array armazenando itens antes de colocar no json
+                        
+                        while True:
+                            visualizarCardapio()  #monstrando cardapio(copiei de gabriel fds)
+                            comidasPedido = int(input("\nInsira o ID da comida solicitada: "))
+                            # Valida se o prato existe
+                            prato_encontrado = None #começa atribuindo valor vazio pro prato, como se ele nao existisse
+                            for prato in informacoes["cardapio"]:
+                                if prato['id'] == comidasPedido:
+                                    prato_encontrado = prato
+                                    break
+                            if not prato_encontrado:
+                                print("ID inválido! Insira um ID do cardápio.")
+                                continue
+                            
+                            quantidade = int(input(f"Quantidade de '{prato_encontrado['nome']}': "))
+                            obsPedido = input("Observações (ex: sem cebola): ")
+                            itens_pedido.append({
+                                'id_prato': comidasPedido,
+                                'nome_prato': prato_encontrado['nome'],
+                                'quantidade': quantidade,
+                                'observacoes': obsPedido,
+                                'status': 'Em preparo'
+                            })
+                            
+                            continuar = input("\nAdicionar mais itens? (S/N): ").lower()
+                            if continuar != 's':
+                                break
+                        informacoes["pedidos"].append({
+                            'mesa': mesaPedido,
+                            'itens': itens_pedido
+                        })
+                        with open(arquivo, 'w') as f:
+                            json.dump(informacoes, f, indent=4, ensure_ascii=False)
+                        print("\n✅ Pedido registrado!")
+                        input("Pressione Enter para continuar...")
 
                     elif opPedidos == 2:
                         # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer cancelar/remover
@@ -198,14 +232,55 @@ def main():
                         pass
 
                     elif opPedidos == 5:
-                        # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer conferir o status
-                        pass
+                        os.system('cls')
+                        informacoes = carregarInfo()
+                        print("\n==================================================")
+                        print("VERIFICAR STATUS DO PEDIDO")
+                        print("==================================================\n")
+                        
+                        # Verifica se tem pedido no json
+                        if not informacoes["pedidos"]:
+                            print("Não há pedidos cadastrados no sistema.")
+                            input("\nPressione Enter para voltar...")
+                            continue
+                            
+                        mesaPedido = input("Informe o número da mesa para ver os pedidos: ")
+                        
+                        #filtra pedidos apenas so da mesa informada
+                        pedidos_mesa = [pedido for pedido in informacoes["pedidos"] if pedido['mesa'] == mesaPedido]
+                        
+                        if not pedidos_mesa:
+                            print(f"\nNão há pedidos registrados para a mesa {mesaPedido}.")
+                            input("\nPressione Enter para voltar...")
+                            continue
+                            
+                        print(f"\n📋 Status dos Pedidos - Mesa {mesaPedido}:")
+                        print("="*50)
+                        
+                        # Mostra todos os pedidos da mesa
+                        for pedido in pedidos_mesa:
+                            print("\nItens do Pedido:")
+                            print("-"*30)
+                            for item in pedido['itens']:
+                                if item['status'] == "Em preparo":
+                                    icone = "⏳"
+                                elif item['status'] == "Pronto":
+                                    icone = "✅"
+                                elif item['status'] == "Entregue":
+                                    icone = "✔️"
+                                
+                                print(f"{icone} {item['nome_prato']} - {item['status']}")
+                                print(f"   Quantidade: {item['quantidade']}")
+                                if item['observacoes']:
+                                    print(f"   Obs: {item['observacoes']}")
+                                print("-"*30)
+                        
+                        input("\nPressione Enter para voltar ao menu...")
 
                     elif opPedidos == 6:
-                        # Opção 6 (adicionar lógica aqui)
                         print("Saindo para o menu principal...")
                         sleep(3)
-                        break         
+                        break       
                        
                        
 

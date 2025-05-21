@@ -280,7 +280,7 @@ def main():
                     elif opPedidos == 6:
                         print("Saindo para o menu principal...")
                         sleep(3)
-                        break         
+                        break       
                        
                        
 

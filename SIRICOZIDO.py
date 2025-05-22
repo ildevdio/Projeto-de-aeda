@@ -48,10 +48,36 @@ def adcionarPratos(idPrato, nomePrato, descricaoPrato, precoPrato):
     }
     informacoes["cardapio"].append(novoPrato)
 
-#confirma que a informação foi adicionada
+
+    
+
+    #confirma que a informação foi adicionada
     with open(arquivo, 'w') as f:
         json.dump(informacoes, f, indent=4, ensure_ascii=False)
     print("Prato adcionado com sucesso!")
+
+
+def editarPrato(idPrato,novoNomePrato,novoDescPrato,novoPrecoPrato):
+    informacoes = carregarInfo()
+    for prato in informacoes['cardapio']:        
+         
+        
+        if prato['id'] == idPrato:
+            
+            prato['nome'] = novoNomePrato
+            prato['descricao'] = novoDescPrato
+            prato['preco'] = novoPrecoPrato
+
+            print("INFORMAÇÕES ATUALIZADAS COM SUCESSO!")       
+            break
+        else: 
+            print("ID NÃO ENCONTRADO")
+            break
+
+    with open(arquivo, 'w') as f:
+        json.dump(informacoes, f, indent=4, ensure_ascii=False)
+
+
 
 def visualizarCardapio():
     informacoes = carregarInfo()
@@ -152,7 +178,31 @@ def main():
                         
                         elif opcardapio == 3: #Editar
                             
+                            os.system('cls')
+                            
+                            idPrato = str(input("Insira o Id do prato que quer editar: "))
+                            try: 
+                                idPrato = int(idPrato)
+                            except ValueError:
+                                print("VALOR INVÁLIDO")
+                                break
+                                                            
+                            novoNomePrato = str(input("Insira o novo nome do prato: ")).title()
+                            
+                            novoDescPrato = str(input("Insira a nova descrição do prato: ")).lower()
+
+                            novoPrecoPrato = str(input("Insira o novo preço do prato: "))                           
+                            try: 
+                                novoPrecoPrato = float(novoPrecoPrato)
+                            except ValueError:
+                                print("VALOR INVÁLIDO (ex: 19.99)")
+                                break
+
+                            editarPrato(idPrato,novoNomePrato,novoDescPrato,novoPrecoPrato,)
+                            
+
                             print("em dev")
+
                             break
                         
                         elif opcardapio == 4: #Excluir

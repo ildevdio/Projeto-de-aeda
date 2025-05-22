@@ -2,11 +2,10 @@
     "cardapio": [
         {
             "id": 1,
-            "nome": "Alface Com Feij�o",
-            "descricao": "gostozin",
-            "preco": 100.0
+            "nome": "Hamburguer De Guaiamum",
+            "descricao": "p�o tostado na chapa,carne de guaiamum em formato de hamburguer, queijo, alface, tomate, cebola, molho da casa",
+            "preco": 19.99
         }
     ],
     "mesas": [],
     "pedidos": []
-}

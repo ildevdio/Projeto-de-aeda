@@ -48,10 +48,14 @@ def adcionarPratos(idPrato, nomePrato, descricaoPrato, precoPrato):
     }
     informacoes["cardapio"].append(novoPrato)
 
+
+    
+
     #confirma que a informação foi adicionada
     with open(arquivo, 'w') as f:
         json.dump(informacoes, f, indent=4, ensure_ascii=False)
     print("Prato adcionado com sucesso!")
+
 
 def editarPrato(idPrato,novoNomePrato,novoDescPrato,novoPrecoPrato):
     informacoes = carregarInfo()
@@ -72,6 +76,8 @@ def editarPrato(idPrato,novoNomePrato,novoDescPrato,novoPrecoPrato):
 
     with open(arquivo, 'w') as f:
         json.dump(informacoes, f, indent=4, ensure_ascii=False)
+
+
 
 def visualizarCardapio():
     informacoes = carregarInfo()
@@ -194,6 +200,9 @@ def main():
 
                             editarPrato(idPrato,novoNomePrato,novoDescPrato,novoPrecoPrato,)
                             
+
+                            print("em dev")
+
                             break
                         
                         elif opcardapio == 4: #Excluir

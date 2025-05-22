@@ -1,0 +1,12 @@
+{
+    "cardapio": [
+        {
+            "id": 1,
+            "nome": "Hamburguer De Guaiamum",
+            "descricao": "pão tostado na chapa,carne de guaiamum em formato de hamburguer, queijo, alface, tomate, cebola, molho da casa",
+            "preco": 19.99
+        }
+    ],
+    "mesas": [],
+    "pedidos": []
+}

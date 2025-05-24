@@ -150,24 +150,27 @@ def homepage():
     print("                       ")
     print("     | Módulos |       ")
     print("                       ")
-    print("  1 - Cardápio         ")
-    print("  2 - Reserva          ")
-    print("  3 - Pedidos          ")
+    print("  1 - Criar reserva    ")
+    print("  2 - Remover reserva  ")
+    print("  3 - Listar reservas  ")
     print("  4 - Sair             ")
     print("                       ")
     print("=======================")  
     
-def reserva():
+def reservaMesas():
     informacoes = carregarInfo()  # Renomeie para 'informacoes' ou algo mais claro
     mesas_ocupadas = len(informacoes["mesas"])  # Acessa as mesas reservadas
     mesas_disponiveis = mesa_qtde - mesas_ocupadas
 
                             
     
-    name = str(input("Qual o seu nome?: "))
+    name = str(input("Qual o seu nome?: ").title())
     email = str(input("Qual o seu email?: ").lower())
     numero_mesa = int(input("Escolha a mesa: "))
-    qtde_mesa = int(input("Insira a quantidade de mesas: "))                                          
+    qtde_mesa = int(input("Insira a quantidade de mesas: "))
+    while qtde_mesa >=25:
+        print("Quantidade excede nosso limite de mesas. ")  
+        qtde_mesa = int(input("Insira a quantidade de mesas: "))                                        
                               
     
 
@@ -184,32 +187,24 @@ def reserva():
 
                     
                     
-def remover():
+def removerReservaMesas():
         informacoes = carregarInfo()     
-        name = len(informacoes["cardapio"]) +1
-    
-        nomePrato = str(input("Qual o nome do novo prato?: ").title())
-                                                
-        descricaoPrato = str(input("Descreva o novo prato: ").lower())
-                                            
-        precoPrato = float(input("Insira o preço do novo prato (ex R$ 24.99): R$ "))
+        print("Remover reservas-->")
+        listarMesas()
 
-                            
-        remessa = {"nome": name, "email": email, "mesa": mesa1, "qtde_mesas": mesa_quant}
+        if not informacoes["mesas"]:
+            print("Não há reservas no momento.")
+            return
+        nome_reserva = str(input("Digite o nome utilizado para a reserva-->"))
 
-        for reserva in informacoes["mesas"]:
-            if reserva == remessa:
-                informacoes["mesas"].remove(reserva)
-            break
-
-                        
-        with open(arquivo, 'w', encoding='utf-8') as arq:
-            json.dump(informacoes, arq, indent=4, ensure_ascii=False)
+        nome_encontrado = None
+        for reserva in informacoes['mesas']:
+            
 
                     
 
                     
-def listar():
+def listarMesas():
     informacoes = carregarInfo()
 
     if informacoes['mesas']:
@@ -218,7 +213,7 @@ def listar():
             print(f"Nome: {lista['nome']}")
             print(f"E-mail: {lista['email']}")
             print(f"Número da mesa: {lista['mesa']}")
-            print(f"Quantidade de mesas: R$ {lista['qtde_mesas']:.2f}")
+            print(f"Quantidade de mesas:{lista['qtde_mesas']}")
             print("-"*50)
     else:
         print("Não há pratos adcionados.")
@@ -301,17 +296,19 @@ def main():
                 op_mesa = int(input("Insira a opção desejada:"))
 
                 while True: 
-                    if 1: 
-                        reserva()
+                    if op_mesa == 1: 
+                        reservaMesas()
                         break
-                    elif 2:
-                        remover()
+                    elif op_mesa == 2:
+                        removerReservaMesas()
                         break
-                    elif 3:
-                        listar()
+                    elif op_mesa == 3:
+                        listarMesas()
                         break
                     
-                    elif 5:
+                    elif op_mesa == 4:
+                        print("Voltandooo...")
+                        sleep(3)
                         break
             
                     else:
@@ -322,7 +319,7 @@ def main():
 
                 
                     
-                break
+                
                 
             case 3:  # CRUD 3
                 while True:

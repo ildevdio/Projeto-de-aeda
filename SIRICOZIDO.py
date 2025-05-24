@@ -1,12 +1,9 @@
-from flask import Flask, render_template, request, flash
 import json
 import os
 from time import sleep
 os.system('cls')
 
-app = Flask(__name__)
 arquivo = os.path.join(os.path.dirname(__file__), 'storage.json')
-app.secret_key = "your_secret_key"
 mesa_qtde = 25
 
 def carregarInfo():
@@ -17,8 +14,8 @@ def carregarInfo():
             "mesas" : [],
             "pedidos" : []
         }
-        with open(arquivo, 'w') as f:
-            json.dump(dados_iniciais, f, indent=4)
+        with open(arquivo, 'w', encoding="utf-8") as f:
+            json.dump(dados_iniciais, f, indent=4, ensure_ascii=False)
             
     #carrega o conteúdo
     with open(arquivo, 'r') as f:   
@@ -104,7 +101,7 @@ def siriCozido():
 
     print("=======================")
     print("                       ")
-    print("  | 🦀Restaurante🦀 |  ")
+    print("  | 🦀Restaurante🦀 | ")
     print("   |  Siri Cozido |    ")
     print("                       ")
     print("=======================")
@@ -125,10 +122,10 @@ def menuPedidos():
     print("                       ")
     print("=======================")
     print("                       ")
-    print("  1 - Adicionar Pedido    ")
-    print("  2 - Cancelar Pedido   ")
-    print("  3 - Editar Pedido           ")
-    print("  4 - Listar Pedidos          ")
+    print("  1 - Adicionar Pedi   ")
+    print("  2 - Cancelar Pedido  ")
+    print("  3 - Editar Pedido    ")
+    print("  4 - Listar Pedidos   ")
     print("  5 - Verificar Status do Pedido ")    
     print("  6 - Sair para o menu ")
     print("=======================")
@@ -140,13 +137,92 @@ def menuGeral():
     print("     | Módulos |       ")
     print("                       ")
     print("  1 - Cardápio         ")
-    print("  2 - dev              ")
-    print("  3 - Pedidos              ")
+    print("  2 - Reserva          ")
+    print("  3 - Pedidos          ")
     print("  4 - Sair             ")
     print("                       ")
     print("=======================")
     
+def homepage():
+                        
+    print("                       ")
+    print("=======================")
+    print("                       ")
+    print("     | Módulos |       ")
+    print("                       ")
+    print("  1 - Cardápio         ")
+    print("  2 - Reserva          ")
+    print("  3 - Pedidos          ")
+    print("  4 - Sair             ")
+    print("                       ")
+    print("=======================")  
+    
+def reserva():
+    informacoes = carregarInfo()  # Renomeie para 'informacoes' ou algo mais claro
+    mesas_ocupadas = len(informacoes["mesas"])  # Acessa as mesas reservadas
+    mesas_disponiveis = mesa_qtde - mesas_ocupadas
 
+                            
+    
+    name = str(input("Qual o seu nome?: "))
+    email = str(input("Qual o seu email?: ").lower())
+    numero_mesa = int(input("Escolha a mesa: "))
+    qtde_mesa = int(input("Insira a quantidade de mesas: "))                                          
+                              
+    
+
+    remessa = {
+        "nome": name,
+        "email": email,
+        "mesa": numero_mesa,  # Usa o novo nome
+        "qtde_mesas": qtde_mesa
+        }
+    informacoes["mesas"].append(remessa)  # Agora funciona, pois 'informacoes' é o dicionário
+                        
+    with open(arquivo, 'w', encoding='utf-8') as arq:
+        json.dump(informacoes, arq, indent=4, ensure_ascii=False)  # Corrigido: 'informacoes' em vez de 'mesas'
+
+                    
+                    
+def remover():
+        informacoes = carregarInfo()     
+        name = len(informacoes["cardapio"]) +1
+    
+        nomePrato = str(input("Qual o nome do novo prato?: ").title())
+                                                
+        descricaoPrato = str(input("Descreva o novo prato: ").lower())
+                                            
+        precoPrato = float(input("Insira o preço do novo prato (ex R$ 24.99): R$ "))
+
+                            
+        remessa = {"nome": name, "email": email, "mesa": mesa1, "qtde_mesas": mesa_quant}
+
+        for reserva in informacoes["mesas"]:
+            if reserva == remessa:
+                informacoes["mesas"].remove(reserva)
+            break
+
+                        
+        with open(arquivo, 'w', encoding='utf-8') as arq:
+            json.dump(informacoes, arq, indent=4, ensure_ascii=False)
+
+                    
+
+                    
+def listar():
+    informacoes = carregarInfo()
+
+    if informacoes['mesas']:
+
+        for lista in informacoes['mesas']:
+            print(f"Nome: {lista['nome']}")
+            print(f"E-mail: {lista['email']}")
+            print(f"Número da mesa: {lista['mesa']}")
+            print(f"Quantidade de mesas: R$ {lista['qtde_mesas']:.2f}")
+            print("-"*50)
+    else:
+        print("Não há pratos adcionados.")
+                    
 def main():
     while True:
         
@@ -171,7 +247,7 @@ def main():
                             
 
                         
-                        elif opcardapio == 2: #adcionar prato
+                        elif opcardapio == 2: #adicionar prato
                             os.system('cls')
                             adcionarPratos('idPrato', 'nomePrato', 'descricaoPrato', 'precoPrato')   
                             break
@@ -220,68 +296,33 @@ def main():
 
 
             case 2: #Crud 2
+                
+                homepage()
+                op_mesa = int(input("Insira a opção desejada:"))
+
+                while True: 
+                    if 1: 
+                        reserva()
+                        break
+                    elif 2:
+                        remover()
+                        break
+                    elif 3:
+                        listar()
+                        break
+                    
+                    elif 5:
+                        break
             
-                    mesa_qtde = 25
+                    else:
+                        print("Erro, escolha uma opção válida.")
+                        break
 
-                    @app.route("/", methods=["GET", "POST"])
-                    def homepage():
-                        return render_template("index.html")
-
-                    @app.route("/reserva", methods=["GET", "POST"])
-                    def reserva():
-                        dados = carregarInfo()  # Renomeie para 'dados' ou algo mais claro
-                        mesas_ocupadas = len(dados["mesas"])  # Acessa as mesas reservadas
-                        mesas_disponiveis = mesa_qtde - mesas_ocupadas
-
-                        if request.method == "POST":
-                            if mesas_disponiveis <= 0:
-                                flash("Desculpe, não há mesas disponíveis no momento!", "error")
-                                return render_template("index.html", mesas_disponiveis=mesas_disponiveis)
-                            
-                            name = request.form["name"]
-                            email = request.form["email"]
-                            numero_mesa = request.form["mesa"]  # Renomeie para 'numero_mesa'
-                            mesa_quant = request.form["mesa_quant"]
-
-                            remessa = {
-                                "nome": name,
-                                "email": email,
-                                "mesa": numero_mesa,  # Usa o novo nome
-                                "quantidade de mesas": mesa_quant
-                            }
-                            dados["mesas"].append(remessa)  # Agora funciona, pois 'dados' é o dicionário
-                        
-                            with open(arquivo, 'w', encoding='utf-8') as arq:
-                                json.dump(dados, arq, indent=4, ensure_ascii=False)  # Corrigido: 'dados' em vez de 'mesas'
-
-                        return render_template("reserva.html", mesas_disponiveis = mesas_disponiveis)
-
-                    @app.route("/remover", methods=["GET", "POST"])
-                    def remover():
-                        mesa = carregarInfo()
-                        if request.method == "POST":        
-                            name = request.form["name1"]
-                            email = request.form["email1"]
-                            mesa1 = request.form["mesa1"]
-                            mesa_quant = request.form["mesa_quant1"]
-
-                            
-                            remessa = {"nome": name, "email": email, "mesa": mesa1, "quantidade de mesas": mesa_quant}
-
-                            for reserva in mesa["mesas"]:
-                                if reserva == remessa:
-                                    mesa["mesas"].remove(reserva)
-                                break
-
-                        
-                            with open(arquivo, 'w', encoding='utf-8') as arq:
-                                json.dump(mesa, arq, indent=4, ensure_ascii=False)
-
-                        return render_template("remover.html")
+                  
 
                 
-                    app.run(debug=True)
-                    break
+                    
+                break
                 
             case 3:  # CRUD 3
                 while True:

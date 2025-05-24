@@ -1,13 +1,10 @@
-from flask import Flask, render_template, request, flash
 import json
 import os
 from time import sleep
 os.system('cls')
 
-app = Flask(__name__)
 arquivo = os.path.join(os.path.dirname(__file__), 'storage.json')
-app.secret_key = "your_secret_key"
-mesa_qtde = 25
+
 
 def carregarInfo():
     #Verifica se o arquivo existe, se não existir, cria o arquivo com uma lista vazia
@@ -17,11 +14,11 @@ def carregarInfo():
             "mesas" : [],
             "pedidos" : []
         }
-        with open(arquivo, 'w') as f:
-            json.dump(dados_iniciais, f, indent=4)
+        with open(arquivo, 'w', encoding="utf-8") as f:
+            json.dump(dados_iniciais, f, indent=4, ensure_ascii=False)
             
     #carrega o conteúdo
-    with open(arquivo, 'r') as f:   
+    with open(arquivo, 'r', encoding="utf-8") as f:   
         return json.load(f)
 
 
@@ -48,10 +45,36 @@ def adcionarPratos(idPrato, nomePrato, descricaoPrato, precoPrato):
     }
     informacoes["cardapio"].append(novoPrato)
 
-#confirma que a informação foi adicionada
-    with open(arquivo, 'w') as f:
+
+    
+
+    #confirma que a informação foi adicionada
+    with open(arquivo, 'w', encoding='utf-8') as f:
         json.dump(informacoes, f, indent=4, ensure_ascii=False)
     print("Prato adcionado com sucesso!")
+
+
+def editarPrato(idPrato,novoNomePrato,novoDescPrato,novoPrecoPrato):
+    informacoes = carregarInfo()
+    for prato in informacoes['cardapio']:        
+         
+        
+        if prato['id'] == idPrato:
+            
+            prato['nome'] = novoNomePrato
+            prato['descricao'] = novoDescPrato
+            prato['preco'] = novoPrecoPrato
+
+            print("INFORMAÇÕES ATUALIZADAS COM SUCESSO!")       
+            break
+        else: 
+            print("ID NÃO ENCONTRADO")
+            break
+
+    with open(arquivo, 'w', encoding='utf-8') as f:
+        json.dump(informacoes, f, indent=4, ensure_ascii=False)
+
+
 
 def visualizarCardapio():
     informacoes = carregarInfo()
@@ -78,7 +101,7 @@ def siriCozido():
 
     print("=======================")
     print("                       ")
-    print("  | 🦀Restaurante🦀 |  ")
+    print("  | 🦀Restaurante🦀 | ")
     print("   |  Siri Cozido |    ")
     print("                       ")
     print("=======================")
@@ -99,10 +122,10 @@ def menuPedidos():
     print("                       ")
     print("=======================")
     print("                       ")
-    print("  1 - Adicionar Pedido    ")
-    print("  2 - Cancelar Pedido   ")
-    print("  3 - Editar Pedido           ")
-    print("  4 - Listar Pedidos          ")
+    print("  1 - Adicionar Pedi   ")
+    print("  2 - Cancelar Pedido  ")
+    print("  3 - Editar Pedido    ")
+    print("  4 - Listar Pedidos   ")
     print("  5 - Verificar Status do Pedido ")    
     print("  6 - Sair para o menu ")
     print("=======================")
@@ -114,13 +137,119 @@ def menuGeral():
     print("     | Módulos |       ")
     print("                       ")
     print("  1 - Cardápio         ")
-    print("  2 - dev              ")
-    print("  3 - Pedidos              ")
+    print("  2 - Reserva          ")
+    print("  3 - Pedidos          ")
     print("  4 - Sair             ")
     print("                       ")
     print("=======================")
     
+def homepage():
+    print("=======================")
+    print("\n     | Módulos |     ")
+    print("\n  1 - Fazer reserva  ")
+    print("  2 - Cancelar Reserva ")
+    print("  3 - Ver reservas     ")
+    print("  4 - Editar Reserva   ")
+    print("  5 - Sair             ")
+    print("\n=======================")  
+    
+def reserva():
+    informacoes = carregarInfo()  # Renomeie para 'informacoes' ou algo mais claro
 
+    if informacoes['mesas']:
+        
+        print("Mesas Utilizadas:", end="")
+        for lista in informacoes['mesas']:
+            print(f"{lista['mesa']} ", end="")
+        print()    
+        print("-"*50)
+    else:
+        print("Não há mesas reservadas.")
+    
+    name = str(input("Qual o seu nome?: "))
+    email = str(input("Qual o seu email?: "))
+    numero_mesa = int(input("Escolha a mesa: "))
+    qtde_mesa = int(input("Insira a quantidade de mesas: "))                                          
+    id_mesa = len(informacoes["mesas"]) + 1
+
+    for verificar in informacoes["mesas"]:
+        if numero_mesa == verificar["mesa"]:
+            print("mesa utilizada")
+        break    
+
+    mesa_ocupada = False
+    for verificar in informacoes["mesas"]:
+        if numero_mesa == verificar["mesa"]:
+            mesa_ocupada = True
+            break
+
+
+    if mesa_ocupada:
+        print("Esta mesa já está ocupada. Por favor, escolha outra.")
+       
+    else:
+        remessa = {
+        "nome": name,
+        "email": email,
+        "mesa": numero_mesa,  
+        "qtde_mesas": qtde_mesa,
+        "id_da_mesa": id_mesa
+        }
+        informacoes["mesas"].append(remessa)
+
+
+    
+        print(f"seu id é: {remessa['id_da_mesa']}")
+                        
+        with open(arquivo, 'w', encoding='utf-8') as arq:
+            json.dump(informacoes, arq, indent=4, ensure_ascii=False)  # Corrigido: 'informacoes' em vez de 'mesas'
+
+                    
+                    
+def remover():
+        informacoes = carregarInfo()
+
+        for lista in informacoes['mesas']:
+            nome = lista['nome']
+            email = lista['email']
+            numero_mesa = lista['mesa']
+            qtde_mesa = lista['qtde_mesa']
+            id_mesa = lista['id_da_mesa']
+
+        remessa = {
+            "nome": nome,
+            "email": email,
+            "mesa": numero_mesa,  
+            "qtde_mesas": qtde_mesa,
+            "id_da_mesa": id_mesa
+        }
+        
+        quest = int(input("Qual o seu id? "))
+        if quest == remessa['id_da_mesa']:
+            for reserva in informacoes["mesas"]:
+                if reserva == remessa:
+                    informacoes["mesas"].remove(reserva)
+                break   
+            with open(arquivo, 'w', encoding='utf-8') as arq:
+                json.dump(informacoes, arq, indent=4, ensure_ascii=False)
+        else:
+            print("ID inválido")
+                    
+def listar():
+    informacoes = carregarInfo()
+
+    if informacoes['mesas']:
+
+        for lista in informacoes['mesas']:
+            print(f"\nNome: {lista['nome']}")
+            print(f"E-mail: {lista['email']}")
+            print(f"Número da mesa: {lista['mesa']}")
+            print(f"Quantidade de mesas:{lista['qtde_mesas']:.2f}")
+            print(f"Id: {lista['id_da_mesa']}\n")
+            print("-"*50)
+    else:
+        print("Não há pratos adcionados.")
+                    
 def main():
     while True:
         
@@ -145,14 +274,38 @@ def main():
                             
 
                         
-                        elif opcardapio == 2: #adcionar prato
+                        elif opcardapio == 2: #adicionar prato
                             os.system('cls')
                             adcionarPratos('idPrato', 'nomePrato', 'descricaoPrato', 'precoPrato')   
                             break
                         
                         elif opcardapio == 3: #Editar
                             
+                            os.system('cls')
+                            
+                            idPrato = str(input("Insira o Id do prato que quer editar: "))
+                            try: 
+                                idPrato = int(idPrato)
+                            except ValueError:
+                                print("VALOR INVÁLIDO")
+                                break
+                                                            
+                            novoNomePrato = str(input("Insira o novo nome do prato: ")).title()
+                            
+                            novoDescPrato = str(input("Insira a nova descrição do prato: ")).lower()
+
+                            novoPrecoPrato = str(input("Insira o novo preço do prato: "))                           
+                            try: 
+                                novoPrecoPrato = float(novoPrecoPrato)
+                            except ValueError:
+                                print("VALOR INVÁLIDO (ex: 19.99)")
+                                break
+
+                            editarPrato(idPrato,novoNomePrato,novoDescPrato,novoPrecoPrato,)
+                            
+
                             print("em dev")
+
                             break
                         
                         elif opcardapio == 4: #Excluir
@@ -170,68 +323,33 @@ def main():
 
 
             case 2: #Crud 2
-            
-                    mesa_qtde = 25
-
-                    @app.route("/", methods=["GET", "POST"])
-                    def homepage():
-                        return render_template("index.html")
-
-                    @app.route("/reserva", methods=["GET", "POST"])
-                    def reserva():
-                        dados = carregarInfo()  # Renomeie para 'dados' ou algo mais claro
-                        mesas_ocupadas = len(dados["mesas"])  # Acessa as mesas reservadas
-                        mesas_disponiveis = mesa_qtde - mesas_ocupadas
-
-                        if request.method == "POST":
-                            if mesas_disponiveis <= 0:
-                                flash("Desculpe, não há mesas disponíveis no momento!", "error")
-                                return render_template("index.html", mesas_disponiveis=mesas_disponiveis)
-                            
-                            name = request.form["name"]
-                            email = request.form["email"]
-                            numero_mesa = request.form["mesa"]  # Renomeie para 'numero_mesa'
-                            mesa_quant = request.form["mesa_quant"]
-
-                            remessa = {
-                                "nome": name,
-                                "email": email,
-                                "mesa": numero_mesa,  # Usa o novo nome
-                                "quantidade de mesas": mesa_quant
-                            }
-                            dados["mesas"].append(remessa)  # Agora funciona, pois 'dados' é o dicionário
-                        
-                            with open(arquivo, 'w', encoding='utf-8') as arq:
-                                json.dump(dados, arq, indent=4, ensure_ascii=False)  # Corrigido: 'dados' em vez de 'mesas'
-
-                        return render_template("reserva.html", mesas_disponiveis = mesas_disponiveis)
-
-                    @app.route("/remover", methods=["GET", "POST"])
-                    def remover():
-                        mesa = carregarInfo()
-                        if request.method == "POST":        
-                            name = request.form["name1"]
-                            email = request.form["email1"]
-                            mesa1 = request.form["mesa1"]
-                            mesa_quant = request.form["mesa_quant1"]
-
-                            
-                            remessa = {"nome": name, "email": email, "mesa": mesa1, "quantidade de mesas": mesa_quant}
-
-                            for reserva in mesa["mesas"]:
-                                if reserva == remessa:
-                                    mesa["mesas"].remove(reserva)
-                                break
-
-                        
-                            with open(arquivo, 'w', encoding='utf-8') as arq:
-                                json.dump(mesa, arq, indent=4, ensure_ascii=False)
-
-                        return render_template("remover.html")
-
                 
-                    app.run(debug=True)
+                homepage()
+                op_mesa = int(input("Insira a opção desejada:"))
+
+                 
+                if op_mesa == 1: 
+                    reserva()
                     break
+                
+                elif op_mesa == 2:
+                    remover()
+                    break
+
+                elif op_mesa == 3:
+                    listar()
+                    break
+                    
+                elif  5:
+                    print("saindo...")
+                    sleep(3)
+                    break
+            
+                else:
+                    print("Erro, escolha uma opção válida.")
+                    break
+
+                break
                 
             case 3:  # CRUD 3
                 while True:

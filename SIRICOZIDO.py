@@ -4,8 +4,8 @@ from time import sleep
 os.system('cls')
 
 arquivo = os.path.join(os.path.dirname(__file__), 'storage.json')
-mesa_qtde = 25
 
+mesa_qtde = 25
 def carregarInfo():
     #Verifica se o arquivo existe, se não existir, cria o arquivo com uma lista vazia
     if not os.path.exists(arquivo):
@@ -18,7 +18,7 @@ def carregarInfo():
             json.dump(dados_iniciais, f, indent=4, ensure_ascii=False)
             
     #carrega o conteúdo
-    with open(arquivo, 'r') as f:   
+    with open(arquivo, 'r', encoding="utf-8") as f:   
         return json.load(f)
 
 
@@ -49,7 +49,8 @@ def adcionarPratos(idPrato, nomePrato, descricaoPrato, precoPrato):
     
 
     #confirma que a informação foi adicionada
-    with open(arquivo, 'w') as f:
+
+    with open(arquivo, 'w', encoding='utf-8') as f:
         json.dump(informacoes, f, indent=4, ensure_ascii=False)
     print("Prato adcionado com sucesso!")
 
@@ -71,7 +72,7 @@ def editarPrato(idPrato,novoNomePrato,novoDescPrato,novoPrecoPrato):
             print("ID NÃO ENCONTRADO")
             break
 
-    with open(arquivo, 'w') as f:
+    with open(arquivo, 'w', encoding='utf-8') as f:
         json.dump(informacoes, f, indent=4, ensure_ascii=False)
 
 
@@ -144,6 +145,98 @@ def menuGeral():
     print("=======================")
     
 def homepage():
+    print("=======================")
+    print("\n     | Módulos |     ")
+    print("\n  1 - Fazer reserva  ")
+    print("  2 - Cancelar Reserva ")
+    print("  3 - Ver reservas     ")
+    print("  4 - Editar Reserva   ")
+    print("  5 - Sair             ")
+    print("\n=======================")  
+    
+def reserva():
+    informacoes = carregarInfo()  # Renomeie para 'informacoes' ou algo mais claro
+
+    if informacoes['mesas']:
+        
+        print("Mesas Utilizadas:", end="")
+        for lista in informacoes['mesas']:
+            print(f"{lista['mesa']} ", end="")
+        print()    
+        print("-"*50)
+    else:
+        print("Não há mesas reservadas.")
+    
+    name = str(input("Qual o seu nome?: "))
+    email = str(input("Qual o seu email?: "))
+    numero_mesa = int(input("Escolha a mesa: "))
+    qtde_mesa = int(input("Insira a quantidade de mesas: "))                                          
+    id_mesa = len(informacoes["mesas"]) + 1
+
+    for verificar in informacoes["mesas"]:
+        if numero_mesa == verificar["mesa"]:
+            print("mesa utilizada")
+        break    
+
+    mesa_ocupada = False
+    for verificar in informacoes["mesas"]:
+        if numero_mesa == verificar["mesa"]:
+            mesa_ocupada = True
+            break
+
+
+    if mesa_ocupada:
+        print("Esta mesa já está ocupada. Por favor, escolha outra.")
+       
+    else:
+        remessa = {
+        "nome": name,
+        "email": email,
+        "mesa": numero_mesa,  
+        "qtde_mesas": qtde_mesa,
+        "id_da_mesa": id_mesa
+        }
+        informacoes["mesas"].append(remessa)
+
+
+    
+        print(f"seu id é: {remessa['id_da_mesa']}")
+                        
+        with open(arquivo, 'w', encoding='utf-8') as arq:
+            json.dump(informacoes, arq, indent=4, ensure_ascii=False)  # Corrigido: 'informacoes' em vez de 'mesas'
+
+                    
+                    
+def remover():
+        informacoes = carregarInfo()
+
+        for lista in informacoes['mesas']:
+            nome = lista['nome']
+            email = lista['email']
+            numero_mesa = lista['mesa']
+            qtde_mesa = lista['qtde_mesa']
+            id_mesa = lista['id_da_mesa']
+
+        remessa = {
+            "nome": nome,
+            "email": email,
+            "mesa": numero_mesa,  
+            "qtde_mesas": qtde_mesa,
+            "id_da_mesa": id_mesa
+        }
+        
+        quest = int(input("Qual o seu id? "))
+        if quest == remessa['id_da_mesa']:
+            for reserva in informacoes["mesas"]:
+                if reserva == remessa:
+                    informacoes["mesas"].remove(reserva)
+                break   
+            with open(arquivo, 'w', encoding='utf-8') as arq:
+                json.dump(informacoes, arq, indent=4, ensure_ascii=False)
+        else:
+            print("ID inválido")
+                    
+def listar():
                         
     print("                       ")
     print("=======================")
@@ -210,6 +303,11 @@ def listarMesas():
     if informacoes['mesas']:
 
         for lista in informacoes['mesas']:
+            print(f"\nNome: {lista['nome']}")
+            print(f"E-mail: {lista['email']}")
+            print(f"Número da mesa: {lista['mesa']}")
+            print(f"Quantidade de mesas:{lista['qtde_mesas']:.2f}")
+            print(f"Id: {lista['id_da_mesa']}\n")
             print(f"Nome: {lista['nome']}")
             print(f"E-mail: {lista['email']}")
             print(f"Número da mesa: {lista['mesa']}")
@@ -315,12 +413,29 @@ def main():
                         print("Erro, escolha uma opção válida.")
                         break
 
-                  
+                if op_mesa == 1: 
+                    reserva()
+                    break
+                
+                elif op_mesa == 2:
+                    remover()
+                    break
 
-                
+                elif op_mesa == 3:
+                    listar()
+                    break
                     
-                
-                
+                elif  5:
+                    print("saindo...")
+                    sleep(3)
+                    break
+            
+                else:
+                    print("Erro, escolha uma opção válida.")
+                    break
+
+                break
+     
             case 3:  # CRUD 3
                 while True:
                     os.system('cls')

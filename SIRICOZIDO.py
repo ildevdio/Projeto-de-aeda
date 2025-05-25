@@ -5,7 +5,7 @@ os.system('cls')
 
 arquivo = os.path.join(os.path.dirname(__file__), 'storage.json')
 
-
+mesa_qtde = 25
 def carregarInfo():
     #Verifica se o arquivo existe, se não existir, cria o arquivo com uma lista vazia
     if not os.path.exists(arquivo):
@@ -49,6 +49,7 @@ def adcionarPratos(idPrato, nomePrato, descricaoPrato, precoPrato):
     
 
     #confirma que a informação foi adicionada
+
     with open(arquivo, 'w', encoding='utf-8') as f:
         json.dump(informacoes, f, indent=4, ensure_ascii=False)
     print("Prato adcionado com sucesso!")
@@ -236,6 +237,67 @@ def remover():
             print("ID inválido")
                     
 def listar():
+                        
+    print("                       ")
+    print("=======================")
+    print("                       ")
+    print("     | Módulos |       ")
+    print("                       ")
+    print("  1 - Criar reserva    ")
+    print("  2 - Remover reserva  ")
+    print("  3 - Listar reservas  ")
+    print("  4 - Sair             ")
+    print("                       ")
+    print("=======================")  
+    
+def reservaMesas():
+    informacoes = carregarInfo()  # Renomeie para 'informacoes' ou algo mais claro
+    mesas_ocupadas = len(informacoes["mesas"])  # Acessa as mesas reservadas
+    mesas_disponiveis = mesa_qtde - mesas_ocupadas
+
+                            
+    
+    name = str(input("Qual o seu nome?: ").title())
+    email = str(input("Qual o seu email?: ").lower())
+    numero_mesa = int(input("Escolha a mesa: "))
+    qtde_mesa = int(input("Insira a quantidade de mesas: "))
+    while qtde_mesa >=25:
+        print("Quantidade excede nosso limite de mesas. ")  
+        qtde_mesa = int(input("Insira a quantidade de mesas: "))                                        
+                              
+    
+
+    remessa = {
+        "nome": name,
+        "email": email,
+        "mesa": numero_mesa,  # Usa o novo nome
+        "qtde_mesas": qtde_mesa
+        }
+    informacoes["mesas"].append(remessa)  # Agora funciona, pois 'informacoes' é o dicionário
+                        
+    with open(arquivo, 'w', encoding='utf-8') as arq:
+        json.dump(informacoes, arq, indent=4, ensure_ascii=False)  # Corrigido: 'informacoes' em vez de 'mesas'
+
+                    
+                    
+def removerReservaMesas():
+        informacoes = carregarInfo()     
+        print("Remover reservas-->")
+        listarMesas()
+
+        if not informacoes["mesas"]:
+            print("Não há reservas no momento.")
+            return
+        nome_reserva = str(input("Digite o nome utilizado para a reserva-->"))
+
+        nome_encontrado = None
+        for reserva in informacoes['mesas']:
+            
+
+                    
+
+                    
+def listarMesas():
     informacoes = carregarInfo()
 
     if informacoes['mesas']:
@@ -246,6 +308,10 @@ def listar():
             print(f"Número da mesa: {lista['mesa']}")
             print(f"Quantidade de mesas:{lista['qtde_mesas']:.2f}")
             print(f"Id: {lista['id_da_mesa']}\n")
+            print(f"Nome: {lista['nome']}")
+            print(f"E-mail: {lista['email']}")
+            print(f"Número da mesa: {lista['mesa']}")
+            print(f"Quantidade de mesas:{lista['qtde_mesas']}")
             print("-"*50)
     else:
         print("Não há pratos adcionados.")
@@ -327,7 +393,26 @@ def main():
                 homepage()
                 op_mesa = int(input("Insira a opção desejada:"))
 
-                 
+                while True: 
+                    if op_mesa == 1: 
+                        reservaMesas()
+                        break
+                    elif op_mesa == 2:
+                        removerReservaMesas()
+                        break
+                    elif op_mesa == 3:
+                        listarMesas()
+                        break
+                    
+                    elif op_mesa == 4:
+                        print("Voltandooo...")
+                        sleep(3)
+                        break
+            
+                    else:
+                        print("Erro, escolha uma opção válida.")
+                        break
+
                 if op_mesa == 1: 
                     reserva()
                     break
@@ -350,7 +435,7 @@ def main():
                     break
 
                 break
-                
+     
             case 3:  # CRUD 3
                 while True:
                     os.system('cls')

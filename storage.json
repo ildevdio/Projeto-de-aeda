@@ -2,23 +2,24 @@
     "cardapio": [
         {
             "id": 1,
-            "nome": "Macarrao",
-            "descricao": "saboroso",
-            "preco": 25.55
-        },
-        {
-            "id": 2,
-            "nome": "Arroz",
-            "descricao": "soltinho",
-            "preco": 30.32
-        },
-        {
-            "id": 3,
-            "nome": "Coca Cola",
-            "descricao": "geladinha",
-            "preco": 25.99
+            "nome": "Hamburguer De Guaiamum",
+            "descricao": "alface, pão e carne",
+            "preco": 19.99
         }
     ],
-    "mesas": [],
+    "mesas": [
+        {
+            "nome": "Dio",
+            "email": "dio",
+            "mesa": 5,
+            "qtde_mesas": 4
+        },
+        {
+            "nome": "Dio",
+            "email": "dio",
+            "mesa": 5,
+            "qtde_mesas": 6
+        }
+    ],
     "pedidos": []
 }

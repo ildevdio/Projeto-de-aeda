@@ -1,25 +1,5 @@
 {
-    "cardapio": [
-        {
-            "id": 1,
-            "nome": "Hamburguer De Guaiamum",
-            "descricao": "alface, pão e carne",
-            "preco": 19.99
-        }
-    ],
-    "mesas": [
-        {
-            "nome": "Dio",
-            "email": "dio",
-            "mesa": 5,
-            "qtde_mesas": 4
-        },
-        {
-            "nome": "Dio",
-            "email": "dio",
-            "mesa": 5,
-            "qtde_mesas": 6
-        }
-    ],
+    "cardapio": [],
+    "mesas": [],
     "pedidos": []
 }

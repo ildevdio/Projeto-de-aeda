@@ -20,37 +20,5 @@
         }
     ],
     "mesas": [],
-    "pedidos": [
-        {
-            "mesa": "3",
-            "itens": [
-                {
-                    "id_prato": 3,
-                    "nome_prato": "Coca Cola",
-                    "quantidade": 1,
-                    "observacoes": "com gelo e limao",
-                    "status": "Em preparo"
-                },
-                {
-                    "id_prato": 2,
-                    "nome_prato": "Arroz",
-                    "quantidade": 1,
-                    "observacoes": "sem cebola",
-                    "status": "Em preparo"
-                }
-            ]
-        },
-        {
-            "mesa": "5",
-            "itens": [
-                {
-                    "id_prato": 1,
-                    "nome_prato": "Macarrao",
-                    "quantidade": 1,
-                    "observacoes": "sem alho",
-                    "status": "Em preparo"
-                }
-            ]
-        }
-    ]
+    "pedidos": []
 }

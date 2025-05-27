@@ -469,19 +469,75 @@ def listarMesas():
         print("Não há pratos adcionados.")
 
 def removerReservaMesas():
-        informacoes = carregarInfo()     
-        print("Remover reservas-->")
-        listarMesas()
+                        os.system('cls') #Limpar a Tela
+                        
+                        informacoes = carregarInfo() #Carrega arquivos com as informações cadastradas
+                        print("\n==================================================")
+                        print("CANCELAR PEDIDO .")
+                        print("==================================================\n")
+                        mesaPedido = input("Informe o número da mesa: ") #Solicita o numero da mesa para verificar os pedidos
 
-        if not informacoes["mesas"]:
-            print("Não há reservas no momento.")
-            return
-        nome_reserva = str(input("Digite o nome utilizado para a reserva-->"))
+                        pedidos_filtrados = [p for p in informacoes["pedidos"] if p['mesa'] == mesaPedido] #Filtra os pedidos para mesa informada
+                        
+                        if not pedidos_filtrados: #Se não existir pedidos para mesa informa ao usuario
+                            print(f"Nenhum pedido encontrado para a mesa {mesaPedido}.")
+                            input("Pressione Enter para continuar...")
+                            
 
-        nome_encontrado = None
-        for reserva in informacoes['mesas']:
-            print("parar de bugar o codigo") #dps coloca aqui alguma coisa, mas por enquanto ta bugando a porra do codigo
+                        print("\nPedidos encontrados:") #Caso encontre pedido para mesa vai mostrar em tela
+                        for idx, pedido in enumerate(pedidos_filtrados): #Percorre os pedidos da mesa para mostrar em tela
+                            print(f"\nPedido #{idx + 1}")
+                            for item in pedido['itens']: #Percorre os itens dos pedidos da mesa para mostrar em tela
+                                print(f"- {item['nome_prato']} (x{item['quantidade']})") #Imprime itens
 
+                        escolha = int(input("Qual pedido deseja cancelar? (número): ")) - 1 #Pergunta qual pedido deseja cancelar
+
+                        if 0 <= escolha < len(pedidos_filtrados): #Verifica se existe o pedido informado
+                            informacoes["pedidos"].remove(pedidos_filtrados[escolha]) #Remove o pedido do BD
+                            with open(arquivo, 'w', encoding='utf-8') as f: #Modifica o arquivo do BD
+                                json.dump(informacoes, f, indent=4, ensure_ascii=False)
+                            print("✅ Pedido cancelado com sucesso!") #Informa que o pedido foi cancelado
+                        else:
+                            print("Opção inválida.") #Não existe o pedido informado
+                        input("\nPressione Enter para continuar...")
+                        pass
+
+                        # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer editar ou editar status dele
+                        os.system('cls') #Limpar a tela
+                        informacoes = carregarInfo() #Carrega arquivos com as informações cadastradas
+                        print("\n==================================================")
+                        print("EDITAR PEDIDO")
+                        print("==================================================\n")
+                        mesaPedido = input("Informe o número da mesa: ") #Solicita o numero da mesa para pesquisar pedidos
+
+                        pedidos_mesa = [p for p in informacoes["pedidos"] if p['mesa'] == mesaPedido] #Verifica os pedidos da mesa informada
+                        
+                        if not pedidos_mesa: #Se não existir pedidos na mesa
+                            print(f"Não há pedidos registrados para a mesa {mesaPedido}.") #Informa que não existem pedidos
+                            input("Pressione Enter para voltar...")
+                            
+
+                        for idx, pedido in enumerate(pedidos_mesa): #Percorre os pedidos da mesa informada
+                            print(f"\nPedido #{idx + 1}:") #Imprime os pedidos 
+                            for i, item in enumerate(pedido['itens']): #Percorre os itens dos pedidos
+                                print(f"  [{i}] {item['nome_prato']} - Status: {item['status']}") #Imprime itens de pedidos
+
+                        pedido_idx = int(input("\nQual pedido deseja editar? (número): ")) - 1 #Pergunta qual o pedido que deseja atualizar
+                        if 0 <= pedido_idx < len(pedidos_mesa): #Verifica se existe o pedido informado
+                            itens = pedidos_mesa[pedido_idx]['itens'] #Percorre itens de pedidos da mesa
+                            item_idx = int(input("Qual item deseja editar? (índice): ")) #Pergunta qual item deseja atualizar o atualizar
+                            if 0 <= item_idx < len(itens): #Percorre itens para atualizar status
+                                novo_status = input("Novo status (Em preparo / Pronto / Entregue): ") #Solicita novo status
+                                itens[item_idx]['status'] = novo_status #Atualiza status do pedido
+                                with open(arquivo, 'w', encoding='utf-8') as f: #Modifica o arquivo do BD
+                                    json.dump(informacoes, f, indent=4, ensure_ascii=False)
+                                print("✅ Status atualizado com sucesso!") #Informa que o pedido foi modificado
+                            else:
+                                print("Item inválido.")
+                        else:
+                            print("Pedido inválido.")
+                        
+                        input("\nPressione Enter para continuar...")
 def main():
     while True:
         
@@ -615,8 +671,7 @@ def main():
                         registrar_pedido()
 
                     elif opPedidos == 2:
-                        # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer cancelar/remover
-                        pass
+                        removerReservaMesas()
 
                     elif opPedidos == 3:
                         # Pedir a mesa, depois puxar todos os pedidos da mesa e perguntar qual pedido quer editar ou editar status dele

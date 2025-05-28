@@ -98,6 +98,12 @@ def deletarPrato():
             prato_encontrado = prato
             break
 
+    prato_encontrado = None
+    for prato in informacoes["cardapio"]:
+        if prato["id"] == id_prato:
+            prato_encontrado = prato
+            break
+            
     if not prato_encontrado:
         print(f"Nenhum prato com o ID {id_prato} foi encontrado.")
         return
@@ -279,6 +285,17 @@ def removerReserva():
         return
 
     encontrou = False
+
+    try:
+        os.system('cls')
+        listarReserva()
+        quest = int(input("Qual o seu id? "))
+    except ValueError:
+        print("ID inválido! Deve ser um número.")
+        return
+
+    encontrou = False
+
     for reserva in informacoes["mesas"]:
         if reserva['id_da_mesa'] == quest:
             informacoes["mesas"].remove(reserva)
@@ -675,6 +692,7 @@ def main():
                         listarReserva()
                     
                     elif op_mesa == 4:
+
                         editarReserva()
                         
                     elif op_mesa == 5:

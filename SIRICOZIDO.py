@@ -98,6 +98,12 @@ def deletarPrato():
             prato_encontrado = prato
             break
 
+    prato_encontrado = None
+    for prato in informacoes["cardapio"]:
+        if prato["id"] == id_prato:
+            prato_encontrado = prato
+            break
+            
     if not prato_encontrado:
         print(f"Nenhum prato com o ID {id_prato} foi encontrado.")
         return
@@ -308,9 +314,50 @@ def listarReserva():
             print(f"Id: {lista['id_da_mesa']}\n")
             print("-"*50)
     else:
+        os.system('cls')
         print("Não há reservas adcionadas.")
 
+def editarReserva():
+    informacoes = carregarInfo()
+
+    if informacoes['mesas']:
+        os.system('cls')
+        listarReserva()
+    else:
+        print("Não há mesas reservadas.")
+
     
+    for lista in informacoes['mesas']:
+        id_mesa = lista['id_da_mesa']
+
+    quest = int(input("Qual o seu id? "))
+    reserva_encontrada = False
+    for i, reserva in enumerate(informacoes['mesas']):
+        if reserva['id_da_mesa'] == quest:
+            reserva_encontrada = True
+
+
+        
+            novo_nome = str(input("Qual o nome que deseja colocar?: "))
+            novo_email = str(input("Qual o seu email?: "))
+            novo_numero_mesa = int(input("Escolha a mesa: "))
+            novo_qtde_mesa = int(input("Insira a quantidade de mesas: "))
+            
+            informacoes['mesas'][i] = {
+            "nome": novo_nome,
+            "email": novo_email,
+            "mesa": novo_numero_mesa,  
+            "qtde_mesas": novo_qtde_mesa,
+            "id_da_mesa": id_mesa
+            }   
+        
+            print("Mudança Concluída.")
+
+        with open(arquivo, 'w', encoding='utf-8') as arq:
+            json.dump(informacoes, arq, indent=4, ensure_ascii=False)
+
+    if not reserva_encontrada:
+        print("ID não encontrado.")   
 
 def registrar_pedido():
     os.system('cls')
@@ -632,7 +679,8 @@ def main():
                         listarReserva()
                     
                     elif op_mesa == 4:
-                        print("Dev")
+
+                        editarReserva()
                         
                     elif op_mesa == 5:
                         print("Saindo...")
